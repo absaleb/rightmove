@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package mashroom.rightmove;
+
+//import "google/protobuf/wrappers.proto"; use if common types are required
+
+option go_package = "gitlab.okta-solutions.com/mashroom/backend/rightmove";
+
+message DetailedDescription {
+    int32 Bedrooms = 1;
+    string Summary = 2;
+    string Description = 3;
+}
+
+message Media {
+    int32 MediaType = 1;
+    string MediaURL = 2;
+}
+
+message Coordinates {
+    double Latitude = 1;
+    double Longitude = 2;
+}
+
+message Location {
+    string CountryCode = 1;
+    string PostalCode = 2;
+    string PropertyNumberOrName = 3;
+    string StreetName = 4;
+    string TownOrCity = 5;
+    Coordinates Coordinates = 6;
+}
+
+message ListingUpdateRequest {
+    int64 NetworkID = 1;
+    int64 BranchID = 2;
+    string AgentRef = 3;
+    bool Published = 4; //true
+    int32 PropertyType = 5;
+    int32 Status = 6;
+    Location Location = 7;
+    double Price = 8;
+    DetailedDescription details = 9;
+    repeated Media Medias = 10;
+    int32 Channel = 11; //lettings
+}
+
+message ListingDeleteRequest {
+    int64 NetworkID = 1;
+    int64 BranchID = 2;
+    string AgentRef = 3;
+    int32 Channel = 4; //lettings
+}
+
+message ListingResponse {
+    string request_id = 1;
+    string message = 2;
+    bool success = 3;
+    string request_timestamp = 4;
+    string response_timestamp = 5;
+}
+
+message ListingListRequest{
+    int64 NetworkID = 1;
+    int64 BranchID = 2;
+}
+
+message Listing {
+    string agent_ref = 1;
+    string rightmove_id = 2;
+    string update_date = 3;
+}
+
+message ListingListResponse {
+    string request_id = 1;
+    string message = 2;
+    bool success = 3;
+    string request_timestamp = 4;
+    string response_timestamp = 5;
+    repeated Listing listings = 6;
+}
+
+service RightmoveService {
+    //    rpc BranchUpdate (BranchUpdateRequest) returns (BranchUpdateResponse);
+    rpc SendProperty (ListingUpdateRequest) returns (ListingResponse);
+    rpc DeleteProperty (ListingDeleteRequest) returns (ListingResponse);
+    rpc Listing (ListingListRequest) returns (ListingListResponse);
+}

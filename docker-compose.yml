@@ -1,0 +1,45 @@
+version: '3.5'
+services:
+  mashroom-rightmove:
+    build:
+      context: .
+    image: "registry.gitlab.okta-solutions.com/mashroom/backend/rightmove:1.0.0"
+    depends_on:
+    - mongodb
+    environment:
+      ADDR: ":10000"
+      MONGO_URL: "mongodb:27017"
+      MONGO_DATABASE: "rightmove-data"
+      MONGO_USERNAME: "rightmove-data"
+      MONGO_PASSWORD: "rightmove-data"
+      ELASTIC_URL: ""
+    expose:
+    - 10000
+    networks:
+      mashroom:
+        ipv4_address: "10.251.0.10"
+    volumes:
+    - "mashroom-rightmove:/data"
+  mongodb:
+    image: "registry.gitlab.okta-solutions.com/mashroom/backend/common/mongo:1.0"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "rightmove-data"
+      MONGO_INITDB_ROOT_PASSWORD: "rightmove-data"
+      MONGO_INITDB_DATABASE: "rightmove-data"
+    expose:
+    - 27017
+    networks:
+      mashroom:
+        ipv4_address: "10.251.0.11"
+    volumes:
+    - "mashroom-rightmove-mongo:/data/db"
+networks:
+  mashroom:
+    name: mashroom
+    driver: bridge
+    ipam:
+      config:
+      - subnet: "10.251.0.0/24"
+volumes:
+  mashroom-rightmove:
+  mashroom-rightmove-mongo:
