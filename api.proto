@@ -29,6 +29,7 @@ message Location {
     string StreetName = 4;
     string TownOrCity = 5;
     Coordinates Coordinates = 6;
+    string Address = 7;
 }
 
 message ListingUpdateRequest {
@@ -43,6 +44,9 @@ message ListingUpdateRequest {
     DetailedDescription details = 9;
     repeated Media Medias = 10;
     int32 Channel = 11; //lettings
+    double Deposit = 12;
+    string AdministrationFee = 13;
+    double RentFrequency = 14;
 }
 
 message ListingDeleteRequest {
