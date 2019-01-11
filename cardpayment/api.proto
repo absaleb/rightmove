@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package mashroom.cardpayment;
+
+//import "google/protobuf/wrappers.proto"; use if common types are required
+
+option go_package = "gitlab.okta-solutions.com/mashroom/backend/cardpayment";
+
+message PaymentByCardRequest {
+    string token = 1;
+    int64 amount =2;
+}
+
+message PaymentByCardResponse {
+    bool success = 1;
+    string message = 2;
+}
+service CardpaymentService {
+    rpc PaymentByCard (PaymentByCardRequest) returns (PaymentByCardResponse);
+}
